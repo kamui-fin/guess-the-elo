@@ -1,0 +1,30 @@
+// fonts
+$logo-font: Gugi Regular;
+$sans-font: Inter, Avenir, Helvetica, Arial, sans-serif;
+
+// colors
+$bg-color: #252422;
+$fg-color: white;
+
+@font-face {
+    font-family: "Gugi Regular";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Gugi Regular"), url("./assets/Gugi-Regular.woff") format("woff");
+}
+
+* {
+    font-family: $sans-font;
+}
+
+body {
+    margin: 0;
+    color: $fg-color;
+    background-color: $bg-color;
+}
+
+a {
+    font-weight: 500;
+    text-decoration: inherit;
+    color: inherit;
+}

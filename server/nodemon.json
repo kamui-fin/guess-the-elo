@@ -1,0 +1,5 @@
+{
+    "ext": "src/*.ts,.env",
+    "verbose": true,
+    "exec": "ts-node src/app.ts"
+}
