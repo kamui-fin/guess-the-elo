@@ -3129,6 +3129,11 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
+chess.js@1.0.0-alpha.0:
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-1.0.0-alpha.0.tgz#3e476bdf58a908d93bddf879830860a9863147f6"
+  integrity sha512-nwEDlNEOZR/FaKW1DZLYtjgJrtAlxBW/6Fp4Hk8QXqpCCLrXweOU6/vKfJ/jNHT2gPqasxi0/ZPslcWAAdzozg==
+
 chessground@^7.6.12:
   version "7.12.0"
   resolved "https://registry.yarnpkg.com/chessground/-/chessground-7.12.0.tgz#92d9726afc9d019c04ded83997c6ba2e6f8f93ff"
