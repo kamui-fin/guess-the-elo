@@ -3,6 +3,124 @@
     margin: auto;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 3rem;
     outline: none;
+    gap: 2rem;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-board {
+    p {
+        margin: 0;
+    }
+
+    .black-info,
+    .white-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .black-info {
+        margin-bottom: 0.8rem;
+    }
+
+    .white-info {
+        margin-top: 1.3rem;
+    }
+
+    .player {
+        display: flex;
+        font-weight: 600;
+        gap: 0.6rem;
+        align-items: center;
+    }
+
+    .timer {
+        display: flex;
+        color: #e3ded8;
+        background-color: #32312f;
+        height: 1.6rem;
+        justify-content: flex-end;
+        padding: 0.2rem;
+        border-radius: 3px;
+        font-weight: 700;
+        align-items: center;
+        padding-left: 1rem;
+        padding-right: 0.6rem;
+    }
+}
+
+.notation {
+    background-color: #32312f;
+    width: 17rem;
+    border-radius: 4px;
+    overflow-y: auto;
+    padding-right: 10px;
+    padding: 0.1rem;
+    max-height: 551px;
+
+    .move {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        height: 2.5rem;
+
+        p {
+            margin: 0;
+        }
+
+        .move-num {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #252422;
+            width: 3rem;
+            height: 100%;
+            color: #bab7b3;
+        }
+
+        .move-cell {
+            flex: 1;
+            color: #e3ded8;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            &:hover {
+                color: white;
+                background-color: #2e2d2a;
+                cursor: pointer;
+            }
+        }
+
+        .active {
+            border: 1px solid white;
+            z-index: 999;
+        }
+    }
+
+    .result {
+        text-align: center;
+        font-size: smaller;
+        padding: 0.5rem;
+    }
+}
+
+.guess {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+
+    input {
+        width: 4rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
 }

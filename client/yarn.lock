@@ -3869,6 +3869,11 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+dayjs@^1.11.7:
+  version "1.11.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
+  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -5072,6 +5077,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+format-duration@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/format-duration/-/format-duration-3.0.1.tgz#35c20f3f52cd32e8d5f62ea0e498982653502f8b"
+  integrity sha512-QlrVmC1IhqcC7Trm4EeRAqbyVyGKIjH9fI/ySf86nq/atpzTcCN6wYD551Cx9Atokaf0VAqAbaNnMLO6NPpTkA==
 
 forwarded@0.2.0:
   version "0.2.0"
