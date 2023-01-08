@@ -10,6 +10,7 @@ import { ReactComponent as Person } from "../../assets/person.svg";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import format from "format-duration";
+import GuessModal from "../../components/GuessModal";
 
 dayjs.extend(duration);
 
@@ -85,7 +86,6 @@ const Home = () => {
                 chess.move(moves[currMove + 1]);
             }
         }
-        console.log(newMoveIndex);
         updateClock(newMoveIndex);
         setFen(chess.fen());
     };
@@ -96,20 +96,21 @@ const Home = () => {
             if (index > 0) {
                 setBlackClock(getMoveClock(index - 1));
             } else {
-                setBlackClock(getMoveClock(index))
+                setBlackClock(getMoveClock(index));
             }
         } else {
             setBlackClock(getMoveClock(index));
             if (index > 0) {
                 setWhiteClock(getMoveClock(index - 1));
             } else {
-                setWhiteClock(getMoveClock(index))
+                setWhiteClock(getMoveClock(index));
             }
         }
     };
 
     return (
         <main>
+            <GuessModal />
             <Navbar />
             <div
                 className="container"
