@@ -21,7 +21,7 @@ const moves = pgn.history();
 
 const getMoveClock = (index) => {
     let test = pgn.getComments()[index].comment;
-    let clock_regex = /\[\%clk (.+)\.\d+\]/;
+    let clock_regex = /\[\%clk (.+)(\.\d+)?\]/;
     let res = test.match(clock_regex)[1];
     let [hours, minutes, seconds] = res.split(":");
     let obj = {
@@ -45,20 +45,23 @@ const Home = () => {
     const chess = useMemo(() => new Chess(), []);
     const [currMove, setCurrMove] = useState(-1);
     const [fen, setFen] = useState(chess.fen());
-    const [blackClock, setBlackClock] = useState("");
-    const [whiteClock, setWhiteClock] = useState("");
+    const [blackClock, setBlackClock] = useState(getMoveClock(0));
+    const [whiteClock, setWhiteClock] = useState(getMoveClock(0));
 
     const handleKeyPress = (e) => {
         if ([38, 40, 37, 39].includes(e.keyCode)) {
             e.preventDefault();
         }
+        let newMoveIndex = currMove;
         if (e.keyCode == "38") {
             // up arrow
+            newMoveIndex = 0;
             chess.reset();
-            setCurrMove(0);
+            setCurrMove(newMoveIndex);
         } else if (e.keyCode == "40") {
             // down arrow
-            setCurrMove(moves.length - 1);
+            newMoveIndex = moves.length - 1;
+            setCurrMove(newMoveIndex);
             chess.reset();
             for (let move of moves) {
                 chess.move(move);
@@ -66,20 +69,43 @@ const Home = () => {
         } else if (e.keyCode == "37") {
             // left arrow
             if (currMove - 1 >= 0) {
+                newMoveIndex = currMove - 1;
                 setCurrMove(currMove - 1);
                 chess.undo();
             } else if (currMove - 1 === -1) {
+                newMoveIndex = -1;
                 setCurrMove(-1);
                 chess.reset();
             }
         } else if (e.keyCode == "39") {
             // right arrow
+            newMoveIndex = currMove + 1;
             if (currMove + 1 < moves.length) {
                 setCurrMove(currMove + 1);
                 chess.move(moves[currMove + 1]);
             }
         }
+        console.log(newMoveIndex);
+        updateClock(newMoveIndex);
         setFen(chess.fen());
+    };
+
+    const updateClock = (index) => {
+        if (index % 2 == 0) {
+            setWhiteClock(getMoveClock(index));
+            if (index > 0) {
+                setBlackClock(getMoveClock(index - 1));
+            } else {
+                setBlackClock(getMoveClock(index))
+            }
+        } else {
+            setBlackClock(getMoveClock(index));
+            if (index > 0) {
+                setWhiteClock(getMoveClock(index - 1));
+            } else {
+                setWhiteClock(getMoveClock(index))
+            }
+        }
     };
 
     return (
@@ -119,10 +145,12 @@ const Home = () => {
                             <div className="move">
                                 <p className="move-num">{index + 1}</p>
                                 <p
-                                    className={`move-cell ${move[0] == moves[currMove] && "active"
-                                        }`}
+                                    className={`move-cell ${
+                                        move[0] == moves[currMove] && "active"
+                                    }`}
                                     onClick={() => {
                                         setCurrMove(2 * index);
+                                        updateClock(2 * index);
                                         // needs optimizing
                                         chess.reset();
                                         for (let i = 0; i <= 2 * index; i++) {
@@ -134,10 +162,12 @@ const Home = () => {
                                     {move[0]}
                                 </p>
                                 <p
-                                    className={`move-cell ${move[1] == moves[currMove] && "active"
-                                        }`}
+                                    className={`move-cell ${
+                                        move[1] == moves[currMove] && "active"
+                                    }`}
                                     onClick={() => {
                                         setCurrMove(2 * index + 1);
+                                        updateClock(2 * index + 1);
                                         chess.reset();
                                         for (
                                             let i = 0;
