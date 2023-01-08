@@ -7,6 +7,7 @@
     margin-top: 3rem;
     outline: none;
     gap: 2rem;
+    overflow: hidden;
 }
 
 .sidebar {
@@ -116,7 +117,7 @@
 .guess {
     display: flex;
     gap: 1rem;
-    margin: 1rem 0;
+    margin-top: 1rem;
 
     input {
         width: 4rem;

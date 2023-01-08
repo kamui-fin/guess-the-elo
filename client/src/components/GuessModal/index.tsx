@@ -2,22 +2,35 @@ import { useState } from "react";
 import Button from "../Button";
 import "./index.scss";
 
+interface Props {
+    guessedElo: number;
+    actualRating: number;
+    gameLink: string;
+    onContinue: () => void;
+    onClickOff: () => void;
+}
+
 const GuessModal = ({
-    guessedElo = 1200,
-    actualRating = 1151,
-    gameLink = "#",
-}) => {
+    guessedElo,
+    actualRating,
+    gameLink,
+    onContinue,
+    onClickOff,
+}: Props) => {
     const [open, setOpen] = useState(true);
+
     const isCorrect = () => {
         return (
             guessedElo >= actualRating - 100 && guessedElo <= actualRating + 100
         );
     };
+
     return (
         <div
             className={`modal ${open && "open"}`}
             onClick={() => {
                 setOpen(false);
+                onClickOff();
             }}
         >
             <div
@@ -41,7 +54,9 @@ const GuessModal = ({
                     <Button>
                         <a href={gameLink}>View Game</a>
                     </Button>
-                    <Button type="secondary">Continue</Button>
+                    <Button onClick={onContinue} type="secondary">
+                        Continue
+                    </Button>
                 </div>
             </div>
         </div>

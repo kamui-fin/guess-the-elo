@@ -1,7 +1,7 @@
 {
-    "name": "pac",
+    "name": "server",
+    "private": true,
     "version": "1.0.0",
-    "license": "GPL-3.0",
     "scripts": {
         "dev": "nodemon",
         "build": "tsc --incremental",
@@ -24,7 +24,8 @@
         "node-mocks-http": "^1.11.0",
         "redis": "^4.0.4",
         "validator": "^13.7.0",
-        "winston": "^3.3.3"
+        "winston": "^3.3.3",
+        "types": "*"
     },
     "devDependencies": {
         "@types/connect-redis": "^0.0.18",

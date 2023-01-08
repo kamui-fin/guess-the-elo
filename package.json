@@ -1,0 +1,17 @@
+{
+    "name": "guess-the-elo",
+    "private": true,
+    "workspaces": [
+        "client",
+        "server",
+        "types"
+    ],
+    "dependencies": {
+        "concurrently": "^7.6.0"
+    },
+    "scripts": {
+        "client_dev": "yarn workspace client dev",
+        "server_dev": "yarn workspace server dev",
+        "dev": "concurrently --kill-others-on-fail \"yarn server_dev\"  \"yarn client_dev\""
+    }
+}
