@@ -13,7 +13,6 @@ const Home = () => {
             const result = await axios.get("/games/random");
             setGameProps({
                 pgn: result.data.game.pgn,
-                playerToGuess: result.data.player,
             });
         })();
     }, []);

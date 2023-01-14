@@ -3,7 +3,7 @@ import duration from "dayjs/plugin/duration";
 import format from "format-duration";
 import Chessground from "react-chessground";
 import { Chess } from "chess.js";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ReactComponent as Person } from "@/assets/person.svg";
 import Button from "@/components/Button";
@@ -38,6 +38,18 @@ interface NotationProps {
 
 const Notation = ({ game, currMove, goToMove }: NotationProps) => {
     const moves = game.history();
+    const moveEl = useRef(null);
+
+    useEffect(() => {
+        if (moveEl.current != null) {
+            moveEl.current.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "start",
+            });
+        }
+    });
+
     return (
         <div className="notation">
             {chunks(moves, 2).map((move, index) => (
@@ -47,6 +59,7 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
                         className={`move-cell ${
                             index * 2 == currMove && "active"
                         }`}
+                        ref={index * 2 == currMove ? moveEl : undefined}
                         onClick={() => {
                             goToMove(2 * index);
                         }}
@@ -57,6 +70,7 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
                         className={`move-cell ${
                             2 * index + 1 == currMove && "active"
                         }`}
+                        ref={index * 2 + 1 == currMove ? moveEl : undefined}
                         onClick={() => {
                             goToMove(2 * index + 1);
                         }}
@@ -76,7 +90,6 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
 dayjs.extend(duration);
 export interface Props {
     pgn: string;
-    playerToGuess: "White" | "Black";
 }
 
 const getMoveClock = (pgn: Chess, index: number): string => {
@@ -105,7 +118,7 @@ function chunks<T>(arr: T[], n: number): T[][] {
     return res;
 }
 
-const GameLayout = ({ pgn, playerToGuess }: Props) => {
+const GameLayout = ({ pgn }: Props) => {
     const chess = useMemo(() => new Chess(), []);
     const [currMove, setCurrMove] = useState(-1);
     const [fen, setFen] = useState(chess.fen());
@@ -113,14 +126,20 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
     const game = new Chess();
     game.loadPgn(pgn);
     const moves = game.history();
-    const realElo = Number.parseInt(game.header()[`${playerToGuess}Elo`]);
+    const whiteElo = Number.parseInt(game.header()[`WhiteElo`]);
+    const blackElo = Number.parseInt(game.header()[`BlackElo`]);
 
     // clock states
-    const [blackClock, setBlackClock] = useState(getMoveClock(game, 0));
-    const [whiteClock, setWhiteClock] = useState(getMoveClock(game, 0));
+    const startingTime = format(
+        Number.parseInt(game.header()["TimeControl"].split("+")[0]) * 1000
+    );
+    const [blackClock, setBlackClock] = useState(startingTime);
+    const [whiteClock, setWhiteClock] = useState(startingTime);
     // form
     const [guessedElo, setGuessedElo] = useState(null);
     const [guessed, setGuessed] = useState(false);
+
+    const [moved, setMoved] = useState(0);
 
     const goToMove = (moveNum: number) => {
         setCurrMove(moveNum);
@@ -130,6 +149,27 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
             chess.move(moves[i]);
         }
         setFen(chess.fen());
+    };
+
+    const getValidMoves = () => {
+        let cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
+        let rows = ["1", "2", "3", "4", "5", "6", "7", "8"];
+        let valids = new Map();
+        for (let col of cols) {
+            for (let row of rows) {
+                let piece = col + row;
+                if (chess.get(piece).type == "p") {
+                    let moves = chess.moves({ square: piece, verbose: true });
+                    if (moves.length) {
+                        valids.set(
+                            piece,
+                            moves.map((move) => move.to)
+                        );
+                    }
+                }
+            }
+        }
+        return valids;
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -176,6 +216,11 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
     };
 
     const updateClock = (index: number) => {
+        if (index === -1) {
+            setWhiteClock(startingTime);
+            setBlackClock(startingTime);
+            return;
+        }
         let setCurrClock = setWhiteClock;
         let setOtherClock = setBlackClock;
         if (index % 2 != 0) {
@@ -186,7 +231,7 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
         if (index > 0) {
             setOtherClock(getMoveClock(game, index - 1));
         } else {
-            setOtherClock(getMoveClock(game, index));
+            setOtherClock(startingTime);
         }
     };
 
@@ -195,8 +240,11 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
             {guessed && (
                 <GuessModal
                     guessedElo={guessedElo || 0}
-                    actualRating={realElo}
+                    whiteRating={whiteElo}
+                    blackRating={blackElo}
                     gameLink={game.header()["Link"]}
+                    whiteUsername={game.header()["White"]}
+                    blackUsername={game.header()["Black"]}
                     onContinue={() => {
                         /* TODO */
                     }}
@@ -216,6 +264,18 @@ const GameLayout = ({ pgn, playerToGuess }: Props) => {
                         <Chessground
                             style={{ marginBottom: "1.4rem" }} // accomodate for coords
                             fen={fen}
+                            // check={game.inCheck()}
+                            movable={{
+                                free: false,
+                                color: { b: "black", w: "white" }[chess.turn()],
+                                dests: getValidMoves(),
+                            }}
+                            premovable={{
+                                enabled: false,
+                            }}
+                            onMove={() => {
+                                setMoved(Math.random());
+                            }}
                         />
                         <Clock player="White" timestamp={whiteClock} />
                     </div>

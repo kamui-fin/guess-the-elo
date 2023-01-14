@@ -16,6 +16,5 @@ export interface IGame {
 }
 
 export interface RandomGame {
-    player: "White" | "Black";
     game: IGame;
 }
