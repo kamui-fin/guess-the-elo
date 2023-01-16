@@ -16,11 +16,14 @@
         "react": "^18.2.0",
         "react-chessground": "^1.5.0",
         "react-dom": "^18.2.0",
+        "react-hook-form": "^7.42.0",
+        "react-icons": "^4.7.1",
         "react-router-dom": "6",
         "sass": "^1.57.1",
+        "types": "*",
         "vite-plugin-svgr": "^2.4.0",
         "vite-tsconfig-paths": "^4.0.3",
-        "types": "*"
+        "zustand": "^4.3.2"
     },
     "devDependencies": {
         "@types/react": "^18.0.26",

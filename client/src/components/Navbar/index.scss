@@ -1,13 +1,19 @@
+.navbar {
+    background-color: #403d39;
+}
+
 nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: #403d39;
+    max-width: 90%;
+    margin: 0 auto;
 
     .logo {
         display: flex;
         gap: 1rem;
         align-items: center;
+        margin-right: 2rem;
 
         .logo-text {
             font-family: "Gugi Regular";
@@ -19,5 +25,14 @@ nav {
         display: flex;
         align-items: center;
         gap: 1rem;
+        margin: 0.5rem 0;
+
+        .page-link {
+            a {
+                font-weight: 600;
+                text-decoration: underline;
+                text-underline-offset: 6px;
+            }
+        }
     }
 }
