@@ -12,6 +12,7 @@ import GuessModal from "@/components/GuessModal";
 import "react-chessground/dist/styles/chessground.css";
 import "@/assets/cburnett.css";
 import "./index.scss";
+import { useNavigate } from "react-router-dom";
 
 interface ClockProps {
     player: "White" | "Black";
@@ -44,7 +45,7 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
         if (moveEl.current != null) {
             moveEl.current.scrollIntoView({
                 behavior: "smooth",
-                block: "nearest",
+                block: "center",
                 inline: "start",
             });
         }
@@ -119,6 +120,7 @@ function chunks<T>(arr: T[], n: number): T[][] {
 }
 
 const GameLayout = ({ pgn }: Props) => {
+    const navigate = useNavigate();
     const chess = useMemo(() => new Chess(), []);
     const [currMove, setCurrMove] = useState(-1);
     const [fen, setFen] = useState(chess.fen());
@@ -158,7 +160,7 @@ const GameLayout = ({ pgn }: Props) => {
         for (let col of cols) {
             for (let row of rows) {
                 let piece = col + row;
-                if (chess.get(piece).type == "p") {
+                if (chess.get(piece)) {
                     let moves = chess.moves({ square: piece, verbose: true });
                     if (moves.length) {
                         valids.set(
@@ -169,6 +171,7 @@ const GameLayout = ({ pgn }: Props) => {
                 }
             }
         }
+        console.log(chess, valids);
         return valids;
     };
 
@@ -246,7 +249,7 @@ const GameLayout = ({ pgn }: Props) => {
                     whiteUsername={game.header()["White"]}
                     blackUsername={game.header()["Black"]}
                     onContinue={() => {
-                        /* TODO */
+                        navigate(0);
                     }}
                     onClickOff={() => {
                         setGuessed(false);
@@ -264,16 +267,19 @@ const GameLayout = ({ pgn }: Props) => {
                         <Chessground
                             style={{ marginBottom: "1.4rem" }} // accomodate for coords
                             fen={fen}
-                            // check={game.inCheck()}
+                            check={chess.inCheck()}
+                            turnColor={{ b: "black", w: "white" }[chess.turn()]}
                             movable={{
                                 free: false,
-                                color: { b: "black", w: "white" }[chess.turn()],
-                                dests: getValidMoves(),
+                                color: "both",
+                                // dests: getValidMoves(),
                             }}
                             premovable={{
                                 enabled: false,
                             }}
-                            onMove={() => {
+                            onMove={(from, to) => {
+                                chess.move({ from, to });
+                                setFen(chess.fen());
                                 setMoved(Math.random());
                             }}
                         />
