@@ -6,14 +6,19 @@ import "./index.scss";
 import Layout from "@/components/Layout";
 
 const Solo = () => {
-    const [gameProps, setGameProps] = useState<GameProps | null>(null);
+    const [gameProps, setGameProps] = useState<GameProps | null>();
+
+    const nextGame = async () => {
+        const result = await axios.get("/games/random");
+        setGameProps({
+            pgn: result.data.game.pgn,
+            nextGame,
+        });
+    };
 
     useEffect(() => {
         (async () => {
-            const result = await axios.get("/games/random");
-            setGameProps({
-                pgn: result.data.game.pgn,
-            });
+            await nextGame();
         })();
     }, []);
 

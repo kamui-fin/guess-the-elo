@@ -4,7 +4,7 @@ import format from "format-duration";
 import Chessground from "react-chessground";
 import { Chess } from "chess.js";
 import { useEffect, useMemo, useRef, useState } from "react";
-
+import { FiRotateCcw } from "react-icons/fi";
 import { ReactComponent as Person } from "@/assets/person.svg";
 import Button from "@/components/Button";
 import GuessModal from "@/components/GuessModal";
@@ -91,6 +91,7 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
 dayjs.extend(duration);
 export interface Props {
     pgn: string;
+    nextGame: () => void;
 }
 
 const getMoveClock = (pgn: Chess, index: number): string => {
@@ -119,11 +120,12 @@ function chunks<T>(arr: T[], n: number): T[][] {
     return res;
 }
 
-const GameLayout = ({ pgn }: Props) => {
+const GameLayout = ({ pgn, nextGame }: Props) => {
     const navigate = useNavigate();
     const chess = useMemo(() => new Chess(), []);
     const [currMove, setCurrMove] = useState(-1);
     const [fen, setFen] = useState(chess.fen());
+    const [orientation, setOrientation] = useState("white");
 
     const game = new Chess();
     game.loadPgn(pgn);
@@ -171,7 +173,6 @@ const GameLayout = ({ pgn }: Props) => {
                 }
             }
         }
-        console.log(chess, valids);
         return valids;
     };
 
@@ -238,6 +239,10 @@ const GameLayout = ({ pgn }: Props) => {
         }
     };
 
+    const rotateBoard = () => {
+        setOrientation(orientation === "white" ? "black" : "white");
+    };
+
     return (
         <div className="game-layout">
             {guessed && (
@@ -249,7 +254,8 @@ const GameLayout = ({ pgn }: Props) => {
                     whiteUsername={game.header()["White"]}
                     blackUsername={game.header()["Black"]}
                     onContinue={() => {
-                        navigate(0);
+                        nextGame();
+                        setGuessed(false);
                     }}
                     onClickOff={() => {
                         setGuessed(false);
@@ -262,11 +268,16 @@ const GameLayout = ({ pgn }: Props) => {
                     onKeyDown={handleKeyPress}
                     tabIndex={0}
                 >
-                    <div className="game-board">
+                    <div
+                        className={`game-board ${
+                            orientation === "black" && "reverse"
+                        }`}
+                    >
                         <Clock player="Black" timestamp={blackClock} />
                         <Chessground
                             style={{ marginBottom: "1.4rem" }} // accomodate for coords
                             fen={fen}
+                            orientation={orientation}
                             check={chess.inCheck()}
                             turnColor={{ b: "black", w: "white" }[chess.turn()]}
                             movable={{
@@ -293,6 +304,10 @@ const GameLayout = ({ pgn }: Props) => {
                             goToMove={goToMove}
                         />
                         <div className="guess">
+                            <FiRotateCcw
+                                className="rotate"
+                                onClick={rotateBoard}
+                            />
                             <input
                                 type="number"
                                 placeholder="Enter Elo"

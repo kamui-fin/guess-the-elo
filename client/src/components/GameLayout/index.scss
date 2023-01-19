@@ -12,6 +12,9 @@
 }
 
 .game-board {
+    display: flex;
+    flex-direction: column;
+
     p {
         margin: 0;
     }
@@ -110,16 +113,28 @@
     }
 }
 
+.reverse {
+    flex-direction: column-reverse;
+}
+
 .guess {
     display: flex;
+    align-items: center;
     gap: 1rem;
     margin-top: 1rem;
+
+    .rotate {
+        &:hover {
+            cursor: pointer;
+        }
+    }
 
     input {
         width: 4rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
         background-color: #32312f;
+        align-self: stretch;
         color: white;
         border: none;
         border-radius: 3px;
