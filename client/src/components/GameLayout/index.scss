@@ -120,6 +120,7 @@
 .guess {
     display: flex;
     align-items: center;
+    height: 3rem;
     gap: 1rem;
     margin-top: 1rem;
 
@@ -134,9 +135,9 @@
         padding-left: 0.5rem;
         padding-right: 0.5rem;
         background-color: #32312f;
-        align-self: stretch;
         color: white;
         border: none;
+        height: 2rem;
         border-radius: 3px;
     }
 }

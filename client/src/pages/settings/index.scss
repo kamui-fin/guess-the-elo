@@ -2,4 +2,34 @@
     margin: 0 auto;
     width: 50%;
     margin-top: 2rem;
+
+    .controls-list {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        gap: 1rem;
+
+        .control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            span {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .min-moves {
+        width: 2rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding: 0.5rem 1rem;
+        background-color: #32312f;
+        align-self: stretch;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        outline: none;
+    }
 }

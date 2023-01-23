@@ -57,9 +57,8 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
                 <div className="move">
                     <p className="move-num">{index + 1}</p>
                     <p
-                        className={`move-cell ${
-                            index * 2 == currMove && "active"
-                        }`}
+                        className={`move-cell ${index * 2 == currMove && "active"
+                            }`}
                         ref={index * 2 == currMove ? moveEl : undefined}
                         onClick={() => {
                             goToMove(2 * index);
@@ -68,9 +67,8 @@ const Notation = ({ game, currMove, goToMove }: NotationProps) => {
                         {move[0] && move[0].toString()}
                     </p>
                     <p
-                        className={`move-cell ${
-                            2 * index + 1 == currMove && "active"
-                        }`}
+                        className={`move-cell ${2 * index + 1 == currMove && "active"
+                            }`}
                         ref={index * 2 + 1 == currMove ? moveEl : undefined}
                         onClick={() => {
                             goToMove(2 * index + 1);
@@ -269,9 +267,8 @@ const GameLayout = ({ pgn, nextGame }: Props) => {
                     tabIndex={0}
                 >
                     <div
-                        className={`game-board ${
-                            orientation === "black" && "reverse"
-                        }`}
+                        className={`game-board ${orientation === "black" && "reverse"
+                            }`}
                     >
                         <Clock player="Black" timestamp={blackClock} />
                         <Chessground

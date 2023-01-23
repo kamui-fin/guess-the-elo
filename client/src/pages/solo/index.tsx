@@ -8,8 +8,16 @@ import Layout from "@/components/Layout";
 const Solo = () => {
     const [gameProps, setGameProps] = useState<GameProps | null>();
 
+    const getSettings = () => {
+        const storedSettings = localStorage.getItem("settings");
+        if (storedSettings) return JSON.parse(storedSettings);
+        return {};
+    };
+
     const nextGame = async () => {
-        const result = await axios.get("/games/random");
+        const result = await axios.get("/games/random", {
+            params: getSettings(),
+        });
         setGameProps({
             pgn: result.data.game.pgn,
             nextGame,
