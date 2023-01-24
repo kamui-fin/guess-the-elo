@@ -29,7 +29,7 @@ const GuessModal = ({
     onClickOff,
 }: Props) => {
     const [open, setOpen] = useState(true);
-    const [avatars, setAvatars] = useState({});
+    const [avatars, setAvatars] = useState({ white: "", black: "" });
 
     const actualRating = Math.floor((whiteRating + blackRating) / 2);
 
@@ -64,7 +64,7 @@ const GuessModal = ({
         );
     };
 
-    const openInNewTab = (url) => {
+    const openInNewTab = (url: string) => {
         const newWindow = window.open(url, "_blank", "noopener,noreferrer");
         if (newWindow) newWindow.opener = null;
     };

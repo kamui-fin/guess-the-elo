@@ -1,9 +1,9 @@
-import express from "express"
-import { gamesController } from "../controllers"
-import { validate } from "../utils"
+import express from "express";
+import { gamesController } from "../controllers";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/random", gamesController.getRandom)
+router.get("/random", gamesController.getRandom);
 
-export default router
+export default router;
+

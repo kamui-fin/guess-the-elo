@@ -1,4 +1,4 @@
-import Axios from "axios"
+import Axios from "axios";
 
-const API_URL = "http://localhost:8080"
-export const axios = Axios.create({baseURL: API_URL})
+const API_URL = "http://localhost:3080";
+export const axios = Axios.create({ baseURL: API_URL });

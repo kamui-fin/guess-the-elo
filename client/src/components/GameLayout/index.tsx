@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import format from "format-duration";
 import Chessground from "react-chessground";
-import { Chess } from "chess.js";
+import { Chess, Square } from "chess.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FiRotateCcw } from "react-icons/fi";
 import { ReactComponent as Person } from "@/assets/person.svg";
@@ -159,7 +159,7 @@ const GameLayout = ({ pgn, nextGame }: Props) => {
         let valids = new Map();
         for (let col of cols) {
             for (let row of rows) {
-                let piece = col + row;
+                let piece = (col + row) as Square;
                 if (chess.get(piece)) {
                     let moves = chess.moves({ square: piece, verbose: true });
                     if (moves.length) {

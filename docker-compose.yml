@@ -1,0 +1,46 @@
+version: "3"
+services:
+    ui:
+        build:
+            context: ./client
+        ports:
+            - 8080:80
+        container_name: gte-ui
+        networks:
+            - gte-net
+        depends_on:
+            - api
+
+    api:
+        build:
+            context: ./server
+        ports:
+            - 3080:3080
+        container_name: gte-api
+        networks:
+            - gte-net
+        depends_on:
+            - db
+        environment:
+            MONGO_URI: mongodb://db/eloguess
+            APP_PORT: 3080
+
+    db:
+        image: mongo
+        container_name: gte-db
+        ports:
+            - 27017
+        networks:
+            - gte-net
+
+    mongo_seed:
+        build: ./mongoseed
+        restart: on-failure
+        depends_on:
+            - db
+        networks:
+            - gte-net
+
+networks:
+    gte-net:
+        driver: bridge

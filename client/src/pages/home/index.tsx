@@ -1,12 +1,39 @@
-import Layout from "@/components/Layout";
+import { useEffect, useState } from "react";
+import { axios } from "@/config";
+import GameLayout, { Props as GameProps } from "@/components/GameLayout";
 
 import "./index.scss";
+import Layout from "@/components/Layout";
 
 const Home = () => {
+    const [gameProps, setGameProps] = useState<GameProps | null>();
+
+    const getSettings = () => {
+        const storedSettings = localStorage.getItem("settings");
+        if (storedSettings) return JSON.parse(storedSettings);
+        return {};
+    };
+
+    const nextGame = async () => {
+        const result = await axios.get("/games/random", {
+            params: getSettings(),
+        });
+        setGameProps({
+            pgn: result.data.game.pgn,
+            nextGame,
+        });
+    };
+
+    useEffect(() => {
+        (async () => {
+            await nextGame();
+        })();
+    }, []);
+
     return (
         <Layout>
             <div className="container">
-                <h1>Welcome back, Kamui</h1>
+                {gameProps && <GameLayout {...gameProps} />}
             </div>
         </Layout>
     );

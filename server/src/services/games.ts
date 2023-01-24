@@ -17,7 +17,6 @@ export const fetchRandomGame = async (
             { $sample: { size: 1 } },
         ])
     )[0];
-    console.log(game);
     return {
         game,
     };

@@ -5,6 +5,6 @@ who has an entertaining series of videos playing GTE. This project was built in 
 
 It selects a random chess.com game based on your GTE preferences and your goal can either be to guess either white or black's elo or the average between both.
 
-![](./demo/main.png)
+![](./main.png)
 
-![](./demo/result.png)
+![](./result.png)
