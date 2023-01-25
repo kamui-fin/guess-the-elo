@@ -4,11 +4,19 @@
     align-items: center;
     outline: none;
     gap: 2rem;
+
+    @media only screen and (max-width: 900px) {
+        flex-direction: column;
+    }
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
+    @media only screen and (max-width: 900px) {
+        flex-direction: column;
+        margin-bottom: 2rem;
+    }
 }
 
 .game-board {
@@ -139,5 +147,9 @@
         border: none;
         height: 2rem;
         border-radius: 3px;
+    }
+
+    @media only screen and (max-width: 900px) {
+        justify-content: center;
     }
 }

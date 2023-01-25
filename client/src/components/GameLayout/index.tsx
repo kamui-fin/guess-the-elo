@@ -118,6 +118,31 @@ function chunks<T>(arr: T[], n: number): T[][] {
     return res;
 }
 
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height,
+    };
+}
+
+function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(
+        getWindowDimensions()
+    );
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return windowDimensions;
+}
+
 const GameLayout = ({ pgn, nextGame }: Props) => {
     const navigate = useNavigate();
     const chess = useMemo(() => new Chess(), []);
@@ -130,6 +155,8 @@ const GameLayout = ({ pgn, nextGame }: Props) => {
     const moves = game.history();
     const whiteElo = Number.parseInt(game.header()[`WhiteElo`]);
     const blackElo = Number.parseInt(game.header()[`BlackElo`]);
+
+    const { height, width } = useWindowDimensions();
 
     // clock states
     const startingTime = format(
@@ -272,7 +299,13 @@ const GameLayout = ({ pgn, nextGame }: Props) => {
                     >
                         <Clock player="Black" timestamp={blackClock} />
                         <Chessground
-                            style={{ marginBottom: "1.4rem" }} // accomodate for coords
+                            style={{
+                                marginBottom: "1.4rem",
+                                width: 0.92 * width,
+                                height: 0.92 * width,
+                                maxWidth: 512,
+                                maxHeight: 512,
+                            }} // accomodate for coords
                             fen={fen}
                             orientation={orientation}
                             check={chess.inCheck()}
